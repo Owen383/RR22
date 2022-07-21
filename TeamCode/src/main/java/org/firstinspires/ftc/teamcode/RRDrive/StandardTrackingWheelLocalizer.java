@@ -39,7 +39,7 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     public static double X_MULTIPLIER = 1.00266667;
     public static double Y_MULTIPLIER = 1.002;
 
-    private static double secret_sauce = 1.01074161d;
+    private static double secret_sauce = 1.015;
 
     @Override
     public void setPoseEstimate(@NonNull Pose2d value) {

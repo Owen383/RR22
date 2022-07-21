@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.apache.commons.math3.stat.descriptive.moment.VectorialCovariance;
 import org.firstinspires.ftc.teamcode.RRDrive.RRMecanumDrivetrain;
 
 //@Disabled
@@ -23,13 +24,15 @@ public class LinearAuto extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     RRMecanumDrivetrain drivetrain;
+    Trajectory splineTest, backToStart;
+    Pose2d startPose = new Pose2d(60, 20, 0);
 
     public void initialize() {
         setOpMode(this);
 
 
         drivetrain = new RRMecanumDrivetrain();
-        drivetrain.setPoseEstimate(new Pose2d(0,0,0));
+        drivetrain.setPoseEstimate(startPose);
         multTelemetry.addData("Status", "Initialized");
         multTelemetry.update();
 
@@ -46,21 +49,25 @@ public class LinearAuto extends LinearOpMode {
 
         if(isStopRequested()) return;
 
-        testCase();
+        buildTrajectories();
+
+        drivetrain.followTrajectory(splineTest);
+        //drivetrain.followTrajectory(backToStart);
     }
 
-    private void testCase(){
-        Trajectory forward = drivetrain.trajectoryBuilder(new Pose2d(0,0, 0))
-                .strafeTo(new Vector2d(50, 25))
+    private void buildTrajectories(){
+        splineTest = drivetrain.trajectoryBuilder(startPose, Math.toRadians(180))
+                .splineToSplineHeading(new Pose2d(-15, 35, Math.toRadians(-90)), Math.toRadians(140))
+                .splineToConstantHeading(new Vector2d(-50, 40), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(-50, 10), Math.toRadians(-90))
                 .build();
 
-        Trajectory strafe = drivetrain.trajectoryBuilder(new Pose2d(20, 0, 0))
-                .strafeLeft(30)
+        backToStart = drivetrain.trajectoryBuilder(splineTest.end(), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-45, 0, Math.toRadians(90)), Math.toRadians(180))
                 .build();
 
-        drivetrain.followTrajectory(forward);
-        drivetrain.followTrajectory(strafe);
+
+
+
     }
 }
-
-
