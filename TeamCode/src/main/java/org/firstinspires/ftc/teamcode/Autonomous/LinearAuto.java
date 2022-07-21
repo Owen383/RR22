@@ -53,9 +53,9 @@ public class LinearAuto extends LinearOpMode {
     }
 
     private void buildTrajectories(){
-        splineTest = drivetrain.trajectoryBuilder(new Pose2d(0,0, 0))
-                .splineToConstantHeading(new Vector2d(30, 25), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-30, 25), Math.toRadians(-90))
+        splineTest = drivetrain.trajectoryBuilder(new Pose2d(-35,0, 0))
+                .splineToConstantHeading(new Vector2d(0, 15), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(35, 0), Math.toRadians(-90))
                 .splineToConstantHeading(new Vector2d(0, 0), Math.toRadians(0))
                 .build();
 
