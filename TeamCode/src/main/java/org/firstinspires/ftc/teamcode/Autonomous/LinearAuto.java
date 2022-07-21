@@ -23,6 +23,7 @@ public class LinearAuto extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     RRMecanumDrivetrain drivetrain;
+     Trajectory splineTest, strafe;
 
     public void initialize() {
         setOpMode(this);
@@ -46,20 +47,25 @@ public class LinearAuto extends LinearOpMode {
 
         if(isStopRequested()) return;
 
-        testCase();
+        buildTrajectories();
+
+        drivetrain.followTrajectory(splineTest);
     }
 
-    private void testCase(){
-        Trajectory forward = drivetrain.trajectoryBuilder(new Pose2d(0,0, 0))
-                .strafeTo(new Vector2d(50, 25))
+    private void buildTrajectories(){
+        splineTest = drivetrain.trajectoryBuilder(new Pose2d(0,0, 0))
+                .splineToConstantHeading(new Vector2d(30, 25), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-30, 25), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(0, 0), Math.toRadians(0))
                 .build();
 
-        Trajectory strafe = drivetrain.trajectoryBuilder(new Pose2d(20, 0, 0))
+        strafe = drivetrain.trajectoryBuilder(new Pose2d(20, 0, 0))
                 .strafeLeft(30)
                 .build();
 
-        drivetrain.followTrajectory(forward);
-        drivetrain.followTrajectory(strafe);
+
+
+
     }
 }
 
