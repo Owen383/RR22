@@ -26,7 +26,7 @@ public class MecanumDrivetrain {
     public final GyroExtensions gyroExtensions;
     public double targetAngle = 0;
     private final PIDController headingPID = new PIDController(DrivetrainDash.headingP, DrivetrainDash.headingI, DrivetrainDash.headingD, 0);
-    public StandardTrackingWheelLocalizer localizer = new StandardTrackingWheelLocalizer();
+    //public StandardTrackingWheelLocalizer localizer = new StandardTrackingWheelLocalizer();
 
     public MecanumDrivetrain(){
         drivefl = new MotorExCustom("drivefl", true);
@@ -42,7 +42,7 @@ public class MecanumDrivetrain {
     public void update(){
         drivefl.update(); drivefr.update(); drivebl.update(); drivebr.update(); gyro.update();
         gyroExtensions.setMomentOfInertia(DrivetrainDash.momentOfInertia);
-        localizer.update();
+        //localizer.update();
         headingPID.update(gyroExtensions.closestTarget(targetAngle) - gyro.angle());
     }
 
@@ -71,7 +71,7 @@ public class MecanumDrivetrain {
     }
 
     public void setMotorPower(double drive, double strafe, double turn, double power){
-        drive = Range.clip(drive, -1, 1);
+        drive = Range.clip(-drive, -1, 1);
         strafe = Range.clip(strafe, -1, 1);
         turn = Range.clip(turn, -1, 1);
         power = Range.clip(power, 0.05 , 1);

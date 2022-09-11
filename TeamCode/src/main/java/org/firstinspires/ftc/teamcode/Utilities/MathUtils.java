@@ -48,6 +48,7 @@ public class MathUtils {
         if(value == 0) return 0;
         else return Math.pow(abs(value), exponent) * (value / abs(value));
     }
+
     public static double absMax(double value1, double value2){
         return Math.max(abs(value1), abs(value2));
     }
