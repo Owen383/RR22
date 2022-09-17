@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.Utilities.OpModeUtils.hardwareMap;
 import android.transition.Slide;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -35,6 +36,7 @@ public class Slides {
         slideMotor = new MotorExCustom("slides");
         arm = hardwareMap.get(Servo.class, "arm");
         claw = hardwareMap.get(Servo.class, "claw");
+        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         slideMotor.stopAndResetEncodes(); slideMotor.runWithoutEncoders();
         currentSlideState = SlideState.HOME; previousSlideState = SlideState.HOME;
     }
@@ -58,8 +60,7 @@ public class Slides {
 
             case SCORE:
                 slidesScore();
-                if(stateTime.seconds() > .2) armScore();
-                else armIntake();
+                armScore();
                 clawClosed();
                 if(extend) newState(SlideState.RETRACT);
                 if(drop) newState(SlideState.DROP);
